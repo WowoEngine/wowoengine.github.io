@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WowoEngine - Advanced Development Tools</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#0f172a',
+                        darker: '#020617',
+                        card: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Global Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .clip-text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Metric Grid Overlay */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+
+        .bg-grid-mask {
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
+        }
+    </style>
+</head>
+
+<body class="bg-darker text-white overflow-x-hidden selection:bg-primary selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/5 bg-darker/80 backdrop-blur-xl">
+        <div class="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse group">
+                <span class="self-center text-2xl font-bold whitespace-nowrap">WowoEngine</span>
+            </a>
+            <button id="mobile-menu-btn" data-collapse-toggle="navbar-default" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                aria-controls="navbar-default" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul
+                    class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-800 rounded-lg bg-gray-900/50 md:bg-transparent md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
+                    <li>
+                        <a href="#about"
+                            class="block py-2 px-3 text-gray-300 rounded hover:text-white md:p-0 transition-all hover:translate-x-1 md:hover:translate-x-0">About</a>
+                    </li>
+                    <li>
+                        <a href="#projects"
+                            class="block py-2 px-3 text-gray-300 rounded hover:text-white md:p-0 transition-all hover:translate-x-1 md:hover:translate-x-0">Projects</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/WowoEngine" target="_blank"
+                            class="block py-2 px-3 text-gray-300 rounded hover:text-white md:p-0 transition-all hover:translate-x-1 md:hover:translate-x-0">
+                            GitHub <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1 opacity-50"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Effects -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <!-- Background Image -->
+            <img src="assets/bg.png" alt="Hero Background"
+                class="absolute inset-0 w-full h-full object-cover opacity-20 invert">
+
+            <div
+                class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-primary/20 rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob">
+            </div>
+            <div
+                class="absolute top-[20%] right-[-10%] w-96 h-96 bg-secondary/20 rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob animation-delay-2000">
+            </div>
+            <div
+                class="absolute -bottom-32 left-1/2 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob animation-delay-4000">
+            </div>
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0 bg-grid bg-grid-mask z-0 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 z-10 text-center">
+            <div class="mb-8 opacity-0 translate-y-10 hero-badge inline-block">
+                <span
+                    class="bg-white/5 border border-white/10 text-white text-xs font-medium px-4 py-1.5 rounded-full backdrop-blur-sm">
+                    The Future of Open Infrastructure
+                </span>
+            </div>
+            <h1 class="hero-title text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter opacity-0 translate-y-10">
+                <span
+                    class="bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 text-transparent bg-clip-text">"Trillion
+                    Rupiah"</span><br> Sky Infrastructure?
+            </h1>
+            <p
+                class="hero-subtitle text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto opacity-0 translate-y-10 leading-relaxed font-light">
+                Why pay national budget prices for 99% downtime? <br>
+                <span class="text-white font-semibold">Teknologi canggih gak harus mahal.</span> We build tools for the
+                people.
+            </p>
+            <div class="hero-cta opacity-0 translate-y-10 flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a href="#projects" id="explore-btn"
+                    class="group relative inline-flex items-center justify-center px-8 py-3.5 text-base font-bold text-white transition-all duration-200 bg-primary/80 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 border border-transparent hover:bg-primary hover:scale-105 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                    Explore Projects
+                </a>
+                <a href="https://github.com/WowoEngine" target="_blank"
+                    class="px-8 py-3.5 text-base font-bold text-gray-300 transition-all duration-200 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:text-white backdrop-blur-sm">
+                    <i class="fab fa-github text-lg mr-1"></i>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <!-- Text Content -->
+                <div class="mb-8 md:mb-0">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white">About Us</h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                        WowoEngine is an open-source initiative dedicated to democratizing infrastructure technology. We
+                        believe that high-performance, scalable, and secure software should be accessible to everyone,
+                        not
+                        just those with massive budgets.
+                    </p>
+                    <p class="text-gray-400 text-lg leading-relaxed">
+                        Our mission is to build "Digital Infrastructure" that is sovereign, efficient, and free from the
+                        complexity that slows down innovation. We are building tools for the people, by the people.
+                    </p>
+                </div>
+
+                <!-- Features/Values Card -->
+                <div
+                    class="glass-card p-8 rounded-3xl border border-white/5 bg-white/5 backdrop-blur-sm opacity-0 translate-y-10 feature-card">
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg mb-1">Open Source</h3>
+                                <p class="text-gray-500 text-sm leading-relaxed">Transparent code that you can trust and
+                                    verify. No black boxes.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-green-500/10 text-green-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg mb-1">Performance</h3>
+                                <p class="text-gray-500 text-sm leading-relaxed">Optimized for speed and efficiency on
+                                    any hardware configuration.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg mb-1">Community Driven</h3>
+                                <p class="text-gray-500 text-sm leading-relaxed">Built by a passionate community of
+                                    developers for developers.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 bg-gradient-to-b from-darker to-black relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between mb-16">
+                <div>
+                    <h2 class="section-title text-3xl md:text-5xl font-bold text-white mb-2">Projects</h2>
+                    <p class="text-gray-500">Our contribution to the ecosystem.</p>
+                </div>
+                <div class="hidden md:block w-32 h-1 bg-white/10 rounded-full"></div>
+            </div>
+
+            <div class="space-y-12">
+                <!-- SawitDB -->
+                <div
+                    class="project-card w-full glass-card rounded-3xl p-8 md:p-12 border border-white/10 hover:border-primary/50 transition-all duration-500 shadow-2xl opacity-0 translate-y-10">
+                    <div class="grid md:grid-cols-2 gap-16 items-center">
+                        <div class="order-2 md:order-1 text-left">
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-secondary uppercase bg-secondary/10 rounded-full border border-secondary/20">
+                                <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                                Database Engine
+                            </div>
+                            <h3 class="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">SawitDB</h3>
+                            <p class="text-gray-400 mb-8 leading-relaxed text-lg">
+                                A philosophically driven database engine designed for high efficiency and local
+                                sovereignty.
+                                SawitDB challenges the status quo of expensive infrastructure with a lightweight,
+                                powerful
+                                alternative.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <a href="https://github.com/WowoEngine/SawitDB" target="_blank"
+                                    class="inline-flex items-center gap-2 text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-white/20 font-bold rounded-xl text-sm px-6 py-3 text-center transition-all hover:scale-105">
+                                    <i class="fab fa-github text-lg mr-1"></i>
+                                    View on GitHub
+                                </a>
+                                <button id="contributors-btn"
+                                    class="inline-flex items-center gap-2 text-white bg-white/10 hover:bg-white/20 border border-white/10 focus:ring-4 focus:outline-none focus:ring-white/10 font-bold rounded-xl text-sm px-6 py-3 text-center transition-all hover:scale-105 backdrop-blur-sm">
+                                    <i class="fa-solid fa-users text-lg mr-1"></i>
+                                    Contributors
+                                </button>
+                            </div>
+                        </div>
+                        <div class="order-1 md:order-2 flex justify-center w-full">
+                            <div
+                                class="relative w-full h-72 md:h-auto md:aspect-video bg-black rounded-xl shadow-2xl overflow-hidden border border-gray-800 group-hover:border-primary/30 transition-colors ring-1 ring-white/5">
+                                <!-- Code snippet simulation -->
+                                <div
+                                    class="absolute top-0 left-0 w-full h-10 bg-[#0d1117] flex items-center px-4 space-x-2 border-b border-gray-800 z-10">
+                                    <div class="w-3 h-3 rounded-full bg-[#fa7970] hover:bg-[#ff5f56] transition-colors">
+                                    </div>
+                                    <div class="w-3 h-3 rounded-full bg-[#ffaa59] hover:bg-[#ffbd2e] transition-colors">
+                                    </div>
+                                    <div class="w-3 h-3 rounded-full bg-[#7ce38b] hover:bg-[#27c93f] transition-colors">
+                                    </div>
+                                    <div class="ml-4 text-xs text-gray-500 font-mono">user@server:~/sawitdb</div>
+                                </div>
+                                <!-- Terminal Content -->
+                                <div
+                                    class="p-6 pt-16 font-mono text-xs md:text-sm h-full overflow-y-auto break-all relative no-scrollbar bg-[#0d1117]/80 backdrop-blur-sm">
+                                    <div id="terminal-content" class="text-gray-300 space-y-2 leading-relaxed"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SawitCore -->
+                <div
+                    class="project-card w-full glass-card rounded-3xl p-8 md:p-12 border border-white/10 hover:border-yellow-500/50 transition-all duration-500 shadow-2xl opacity-0 translate-y-10">
+                    <div class="grid md:grid-cols-2 gap-16 items-center">
+                        <div class="order-2 md:order-1 text-left">
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-yellow-500 uppercase bg-yellow-500/10 rounded-full border border-yellow-500/20">
+                                <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                                Coming Soon
+                            </div>
+                            <h3 class="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">SawitCore</h3>
+                            <p class="text-gray-400 mb-8 leading-relaxed text-lg">
+                                The next evolution of our infrastructure stack. SawitCore will provide the fundamental
+                                kernel for truly sovereign, decentralized digital ecosystems.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <button disabled
+                                    class="cursor-not-allowed opacity-50 inline-flex items-center gap-2 text-white bg-white/10 border border-white/10 font-bold rounded-xl text-sm px-6 py-3 text-center">
+                                    <i class="fa-solid fa-clock text-lg mr-1"></i>
+                                    Stay Tuned
+                                </button>
+                            </div>
+                        </div>
+                        <div class="order-1 md:order-2 flex justify-center w-full">
+                            <div
+                                class="relative w-full h-72 md:h-auto md:aspect-video bg-black/50 rounded-xl shadow-2xl overflow-hidden border border-gray-800 flex items-center justify-center group-hover:border-yellow-500/30 transition-colors ring-1 ring-white/5">
+                                <div class="text-center">
+                                    <i class="fa-solid fa-microchip text-6xl text-gray-700 mb-4"></i>
+                                    <p class="text-gray-600 font-mono text-sm">System Kernel v0.0.1</p>
+                                </div>
+                                <!-- Diagonal stripes pattern for 'under construction' feel -->
+                                <div
+                                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9InAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgNDBMODAgME0wIDBMODAgNDAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3ApIi8+PC9zdmc+')] opacity-20">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-6 md:mb-0">
+                    <span class="text-2xl font-bold text-white">WowoEngine</span>
+                    <p class="text-gray-600 text-sm mt-2">Built for the people, by the people.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i
+                            class="fab fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i
+                            class="fab fa-github text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i
+                            class="fab fa-discord text-xl"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 text-center md:text-left">
+                <p class="text-gray-600 text-sm">© 2025 WowoEngine. Open Source and Free. <span class="text-gray-800">No
+                        Anggaran Bocor.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contributors Modal -->
+    <div id="contributors-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Background backdrop, show/hide based on modal state. -->
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <!-- Modal panel -->
+                <div class="relative transform overflow-hidden rounded-2xl bg-darker border border-white/10 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg opacity-0 scale-95"
+                    id="modal-panel">
+                    <div class="bg-white/5 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                <h3 class="text-2xl font-bold leading-6 text-white mb-4" id="modal-title">Project
+                                    Contributors</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-400 mb-6">Thanks to the amazing people who made this
+                                        possible.</p>
+
+                                    <!-- Contributors List -->
+                                    <div class="space-y-4 max-h-60 overflow-y-auto pr-2 no-scrollbar">
+                                        <!-- sonofescobar1337 -->
+                                        <div
+                                            class="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                                            <img class="w-10 h-10 rounded-full border border-white/10"
+                                                src="https://avatars.githubusercontent.com/u/97580283?v=4"
+                                                alt="sonofescobar1337">
+                                            <div>
+                                                <h4 class="text-white font-semibold">sonofescobar1337</h4>
+                                                <a href="https://github.com/sonofescobar1337" target="_blank"
+                                                    class="text-xs text-blue-400 hover:text-white transition-colors">11
+                                                    Contributions</a>
+                                            </div>
+                                        </div>
+                                        <!-- repo-unx -->
+                                        <div
+                                            class="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                                            <img class="w-10 h-10 rounded-full border border-white/10"
+                                                src="https://avatars.githubusercontent.com/u/201969566?v=4"
+                                                alt="repo-unx">
+                                            <div>
+                                                <h4 class="text-white font-semibold">repo-unx</h4>
+                                                <a href="https://github.com/repo-unx" target="_blank"
+                                                    class="text-xs text-blue-400 hover:text-white transition-colors">2
+                                                    Contributions</a>
+                                            </div>
+                                        </div>
+                                        <!-- rayocta303 -->
+                                        <div
+                                            class="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                                            <img class="w-10 h-10 rounded-full border border-white/10"
+                                                src="https://avatars.githubusercontent.com/u/46717801?v=4"
+                                                alt="rayocta303">
+                                            <div>
+                                                <h4 class="text-white font-semibold">rayocta303</h4>
+                                                <a href="https://github.com/rayocta303" target="_blank"
+                                                    class="text-xs text-blue-400 hover:text-white transition-colors">1
+                                                    Contribution</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-white/5">
+                        <button type="button" id="close-modal-btn"
+                            class="inline-flex w-full justify-center rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20 sm:ml-3 sm:w-auto transition-colors">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('navbar-default');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        const menuLinks = menu.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            });
+        });
+
+        // --- 1. Audio Logic ---
+        const exploreBtn = document.getElementById('explore-btn');
+        // Preload audio
+        const wowoAudio = new Audio('assets/wowo.mp3');
+
+        let hasPlayed = false;
+        if (exploreBtn) {
+            exploreBtn.addEventListener('click', () => {
+                if (!hasPlayed) {
+                    wowoAudio.play().catch(e => console.log("Audio play failed:", e));
+                    hasPlayed = true;
+                }
+            });
+        }
+
+        // --- 2. GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        const tl = gsap.timeline();
+
+        tl.to(".hero-badge", { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" })
+            .to(".hero-title", { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.3")
+            .to(".hero-subtitle", { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.4")
+            .to(".hero-cta", { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }, "-=0.4");
+
+        // Feature Cards Stagger
+        // Use gsap.to for robust visibility handling (start invisible in CSS, animate to visible)
+        gsap.to(".feature-card", {
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 80%",
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power3.out"
+        });
+
+        gsap.to(".project-card", {
+            scrollTrigger: {
+                trigger: "#projects",
+                start: "top 70%",
+                onEnter: () => startTypingAnimation()
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            stagger: 0.2,
+            ease: "power3.out"
+        });
+
+        // --- 3. Typing Animation ---
+        const terminalContent = document.getElementById('terminal-content');
+        const lines = [
+            { text: "> git clone https://github.com/WowoEngine/SawitDB.git", class: "text-white" },
+            { text: "Cloning into 'SawitDB'...", class: "text-gray-500", delay: 400 },
+            { text: "> cd SawitDB", class: "text-white", delay: 800 },
+            { text: "> node bin/sawit-server.js", class: "text-white", delay: 1200 },
+            { text: "[INFO] SawitDB Server v1.0.0", class: "text-blue-400", delay: 1600 },
+            { text: "[READY] 0.0.0.0:7878 // Waiting for harvest...", class: "text-yellow-400", delay: 2000 }
+        ];
+
+        let typingStarted = false;
+
+        function typeLine(element, text, speed = 40) {
+            return new Promise(resolve => {
+                let i = 0;
+                element.innerHTML = '<span class="cursor"></span>';
+                const cursor = element.querySelector('.cursor');
+
+                function type() {
+                    if (i < text.length) {
+                        element.insertBefore(document.createTextNode(text.charAt(i)), cursor);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        async function runTypingSequence() {
+            for (const line of lines) {
+                const lineEl = document.createElement('div');
+                lineEl.className = line.class;
+                terminalContent.appendChild(lineEl);
+
+                const previousCursors = terminalContent.querySelectorAll('.cursor');
+                previousCursors.forEach(c => c.remove());
+
+                if (line.text.startsWith('>')) {
+                    await typeLine(lineEl, line.text, 30);
+                } else {
+                    await new Promise(r => setTimeout(r, 300));
+                    lineEl.textContent = line.text;
+                }
+                await new Promise(r => setTimeout(r, 400));
+            }
+            const lastLine = terminalContent.lastElementChild;
+            if (lastLine) {
+                const finalCursor = document.createElement('span');
+                finalCursor.className = 'cursor text-white';
+                lastLine.appendChild(finalCursor);
+            }
+        }
+
+        function startTypingAnimation() {
+            if (typingStarted) return;
+            typingStarted = true;
+            runTypingSequence();
+        }
+
+        // --- 4. Modal Logic ---
+        const modal = document.getElementById('contributors-modal');
+        const openModalBtn = document.getElementById('contributors-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalPanel = document.getElementById('modal-panel');
+        // Preload open sound
+        const openAudio = new Audio('assets/open.mp3');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Play sound
+            openAudio.currentTime = 0;
+            openAudio.play().catch(e => console.log("Audio play failed:", e));
+
+            // Animate in
+            gsap.to(modalBackdrop, { opacity: 1, duration: 0.3 });
+            gsap.to(modalPanel, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.7)" });
+        }
+
+        function closeModal() {
+            // Animate out
+            gsap.to(modalBackdrop, { opacity: 0, duration: 0.2 });
+            gsap.to(modalPanel, {
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.2,
+                onComplete: () => {
+                    modal.classList.add('hidden');
+                }
+            });
+        }
+
+        if (openModalBtn) {
+            openModalBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal();
+            });
+        }
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+
+        // Close on backdrop click
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', closeModal);
+        }
+
+    </script>
+</body>
+
+</html>
