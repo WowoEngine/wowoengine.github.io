@@ -473,45 +473,11 @@
                                         possible.</p>
 
                                     <!-- Contributors List -->
-                                    <div class="space-y-4 max-h-60 overflow-y-auto pr-2 no-scrollbar">
-                                        <!-- sonofescobar1337 -->
-                                        <div
-                                            class="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                                            <img class="w-10 h-10 rounded-full border border-white/10"
-                                                src="https://avatars.githubusercontent.com/u/97580283?v=4"
-                                                alt="sonofescobar1337">
-                                            <div>
-                                                <h4 class="text-white font-semibold">sonofescobar1337</h4>
-                                                <a href="https://github.com/sonofescobar1337" target="_blank"
-                                                    class="text-xs text-blue-400 hover:text-white transition-colors">11
-                                                    Contributions</a>
-                                            </div>
-                                        </div>
-                                        <!-- repo-unx -->
-                                        <div
-                                            class="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                                            <img class="w-10 h-10 rounded-full border border-white/10"
-                                                src="https://avatars.githubusercontent.com/u/201969566?v=4"
-                                                alt="repo-unx">
-                                            <div>
-                                                <h4 class="text-white font-semibold">repo-unx</h4>
-                                                <a href="https://github.com/repo-unx" target="_blank"
-                                                    class="text-xs text-blue-400 hover:text-white transition-colors">2
-                                                    Contributions</a>
-                                            </div>
-                                        </div>
-                                        <!-- rayocta303 -->
-                                        <div
-                                            class="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
-                                            <img class="w-10 h-10 rounded-full border border-white/10"
-                                                src="https://avatars.githubusercontent.com/u/46717801?v=4"
-                                                alt="rayocta303">
-                                            <div>
-                                                <h4 class="text-white font-semibold">rayocta303</h4>
-                                                <a href="https://github.com/rayocta303" target="_blank"
-                                                    class="text-xs text-blue-400 hover:text-white transition-colors">1
-                                                    Contribution</a>
-                                            </div>
+                                    <div id="contributors-list"
+                                        class="space-y-4 max-h-60 overflow-y-auto pr-2 no-scrollbar">
+                                        <div class="text-center text-gray-500 py-4">
+                                            <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Loading
+                                            contributors...
                                         </div>
                                     </div>
                                 </div>
@@ -713,6 +679,44 @@
         if (modalBackdrop) {
             modalBackdrop.addEventListener('click', closeModal);
         }
+
+        // --- 5. Fetch Contributors ---
+        async function fetchContributors() {
+            const container = document.getElementById('contributors-list');
+            if (!container) return;
+
+            try {
+                const response = await fetch('https://api.github.com/repos/WowoEngine/SawitDB/contributors');
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+
+                // Clear loading state
+                container.innerHTML = '';
+
+                data.forEach(contributor => {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer';
+                    el.innerHTML = `
+                        <img class="w-10 h-10 rounded-full border border-white/10" src="${contributor.avatar_url}" alt="${contributor.login}">
+                        <div>
+                            <h4 class="text-white font-semibold">${contributor.login}</h4>
+                            <a href="${contributor.html_url}" target="_blank"
+                                class="text-xs text-blue-400 hover:text-white transition-colors">
+                                ${contributor.contributions} Contribution${contributor.contributions !== 1 ? 's' : ''}
+                            </a>
+                        </div>
+                    `;
+                    el.onclick = () => window.open(contributor.html_url, '_blank');
+                    container.appendChild(el);
+                });
+            } catch (error) {
+                console.error("Error loading contributors:", error);
+                container.innerHTML = '<div class="text-center text-red-400 py-4">Failed to load contributors.</div>';
+            }
+        }
+
+        // Fetch on load
+        fetchContributors();
 
     </script>
 </body>
