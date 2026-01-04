@@ -342,6 +342,35 @@
                                 Database Engine
                             </div>
                             <h3 class="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">SawitDB</h3>
+
+                            <!-- Stats Badges -->
+                            <div class="flex flex-wrap gap-3 mb-6" id="sawitdb-stats">
+                                <a href="https://github.com/WowoEngine/SawitDB/stargazers" target="_blank"
+                                    class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs md:text-sm text-gray-300 hover:bg-white/10 transition-colors">
+                                    <i class="fa-regular fa-star text-yellow-400"></i>
+                                    <span id="star-count" class="font-mono">...</span> stars
+                                </a>
+                                <a href="https://github.com/WowoEngine/SawitDB/network/members" target="_blank"
+                                    class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs md:text-sm text-gray-300 hover:bg-white/10 transition-colors">
+                                    <i class="fa-solid fa-code-branch text-blue-400"></i>
+                                    <span id="fork-count" class="font-mono">...</span> forks
+                                </a>
+                                <a href="https://github.com/WowoEngine/SawitDB/issues" target="_blank"
+                                    class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs md:text-sm text-gray-300 hover:bg-white/10 transition-colors">
+                                    <i class="fa-regular fa-circle-dot text-green-400"></i>
+                                    <span id="issue-count" class="font-mono">...</span> issues
+                                </a>
+                                <a href="https://github.com/WowoEngine/SawitDB/watchers" target="_blank"
+                                    class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs md:text-sm text-gray-300 hover:bg-white/10 transition-colors">
+                                    <i class="fa-regular fa-eye text-cyan-400"></i>
+                                    <span id="watcher-count" class="font-mono">...</span> watchers
+                                </a>
+                                <span
+                                    class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs md:text-sm text-gray-300">
+                                    <i class="fa-solid fa-scale-balanced text-purple-400"></i>
+                                    <span id="license-type" class="font-mono">...</span>
+                                </span>
+                            </div>
                             <p class="text-gray-400 mb-8 leading-relaxed text-lg">
                                 A philosophically driven database engine designed for high efficiency and local
                                 sovereignty.
@@ -717,6 +746,37 @@
 
         // Fetch on load
         fetchContributors();
+
+        // --- 6. Fetch Repo Stats ---
+        async function fetchRepoStats() {
+            const starCountEl = document.getElementById('star-count');
+            const forkCountEl = document.getElementById('fork-count');
+            const issueCountEl = document.getElementById('issue-count');
+            const watcherCountEl = document.getElementById('watcher-count');
+            const licenseTypeEl = document.getElementById('license-type');
+
+            // We only check for one to fail early, but in production we should check individually inside
+            if (!starCountEl) return;
+
+            try {
+                const response = await fetch('https://api.github.com/repos/WowoEngine/SawitDB');
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+
+                if (starCountEl) starCountEl.textContent = data.stargazers_count;
+                if (forkCountEl) forkCountEl.textContent = data.forks_count;
+                if (issueCountEl) issueCountEl.textContent = data.open_issues_count;
+                if (watcherCountEl) watcherCountEl.textContent = data.subscribers_count; // 'watchers' in API usually means stars, 'subscribers' is actual watchers
+                if (licenseTypeEl) licenseTypeEl.textContent = data.license ? data.license.spdx_id : 'No License';
+
+            } catch (error) {
+                console.error("Error loading repo stats:", error);
+                const els = [starCountEl, forkCountEl, issueCountEl, watcherCountEl, licenseTypeEl];
+                els.forEach(el => { if (el) el.textContent = '-'; });
+            }
+        }
+
+        fetchRepoStats();
 
     </script>
 </body>
