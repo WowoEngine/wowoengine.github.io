@@ -715,29 +715,91 @@
         </div>
     </section>
 
-    <!-- WLJ Cloud Partner Section -->
-    <section class="py-12 border-t border-white/5 bg-black/50">
+    <!-- Services Section -->
+    <section id="services" class="py-24 relative z-10 bg-darker border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4">
-            <div
-                class="rounded-2xl bg-white/5 border border-white/5 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="text-center md:text-left">
-                    <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
-                        <span
-                            class="text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide">Cloud
-                            Hosting</span>
-                        <h3 class="text-xl font-bold text-white">WLJ Cloud</h3>
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="section-title text-3xl md:text-5xl font-bold text-white mb-4">Engineering Services</h2>
+                <p class="text-gray-400 text-lg">
+                    Need custom high-performance infrastructure? Hire the builders of SawitDB.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Web & Info Systems -->
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition-all group">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-globe"></i>
                     </div>
-                    <p class="text-sm text-gray-400 max-w-xl">
-                        Cloud hosting for your projects. Low latency &
-                        sovereign.
+                    <h3 class="text-xl font-bold text-white mb-3">Web & Info Systems</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Comprehensive web solutions from landing pages to complex information systems. We build robust
+                        APIs and fix critical bugs.
                     </p>
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center text-gray-500 text-sm">
+                            <i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> Website & Sistem Informasi
+                        </li>
+                        <li class="flex items-center text-gray-500 text-sm">
+                            <i class="fa-solid fa-check text-blue-500 mr-2 text-xs"></i> API Dev & Bug Fixing
+                        </li>
+                    </ul>
                 </div>
-                <div class="shrink-0">
-                    <a href="https://wlj-cloud.id/" target="_blank"
-                        class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 bg-white/5 border border-white/10 hover:bg-white/10 rounded-lg whitespace-nowrap">
-                        Visit WLJ Cloud <i class="fa-solid fa-arrow-right ml-2 text-xs opacity-50"></i>
-                    </a>
+
+                <!-- Hardware & IoT -->
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <i class="fa-solid fa-microchip text-8xl"></i>
+                    </div>
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-violet-500/10 text-violet-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform relative z-10">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 relative z-10">Hardware & IoT</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6 relative z-10">
+                        End-to-end hardware development. From Arduino/Raspberry Pi prototyping to professional PCB
+                        design and assembly.
+                    </p>
+                    <ul class="space-y-2 mb-8 relative z-10">
+                        <li class="flex items-center text-gray-500 text-sm">
+                            <i class="fa-solid fa-check text-violet-500 mr-2 text-xs"></i> IoT & Embedded Systems
+                        </li>
+                        <li class="flex items-center text-gray-500 text-sm">
+                            <i class="fa-solid fa-check text-violet-500 mr-2 text-xs"></i> PCB Design & Assembly
+                        </li>
+                    </ul>
                 </div>
+
+                <!-- Academic & Custom -->
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition-all group">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-orange-500/10 text-orange-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Academic & Custom</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Standardized assistance for Final Projects (Tugas Akhir) and unique custom requests. Realize
+                        your innovative ideas.
+                    </p>
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center text-gray-500 text-sm">
+                            <i class="fa-solid fa-check text-orange-500 mr-2 text-xs"></i> Project Tugas Akhir (TA)
+                        </li>
+                        <li class="flex items-center text-gray-500 text-sm">
+                            <i class="fa-solid fa-check text-orange-500 mr-2 text-xs"></i> Custom Requests
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="https://bit.ly/patradev" target="_blank"
+                    class="inline-flex items-center justify-center px-8 py-3.5 text-base font-bold text-white transition-all duration-200 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl backdrop-blur-sm group">
+                    <i class="fa-regular fa-calendar-check mr-2 group-hover:text-primary transition-colors"></i>
+                    Book a Consultation
+                </a>
+                <p class="mt-4 text-xs text-gray-600">Serious inquiries only. We value sovereignty.</p>
             </div>
         </div>
     </section>
